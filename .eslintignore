@@ -1,0 +1,4 @@
+node_modules
+*.d.ts
+.eslintrc.js
+*.config.js

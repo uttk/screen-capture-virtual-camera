@@ -1,0 +1,18 @@
+{
+  "name": "Emoji Live Virtual Webcam",
+  "version": "0.0.1",
+  "minimum_chrome_version": "10.0",
+  "icons": {},
+  "description": "Emoji Liveを描画するための仮想カメラを提供します",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["index.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "permissions": ["tabs", "<all_urls>"],
+  "manifest_version": 2,
+  "web_accessible_resources": ["js/*"]
+}
