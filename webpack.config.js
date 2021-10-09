@@ -10,11 +10,13 @@ module.exports = {
   mode: isDev ? "development" : "production",
   devtool: isDev ? "inline-source-map" : false,
 
-  entry: path.resolve(__dirname, "./src/index.ts"),
+  entry: {
+    index: path.resolve(__dirname, "./src/index.ts"),
+    main: path.resolve(__dirname, "./src/main.ts"),
+  },
 
   output: {
     path: path.resolve(__dirname, "build"),
-    filename: "index.js",
     clean: true,
   },
 
