@@ -11,7 +11,7 @@
     "lint:eslint": "eslint src --ext .js,.ts",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier --write \"**/*.{js,ts}\"",
-    "fix:eslint": "lint:eslint --fix"
+    "fix:eslint": "eslint src --ext .js,.ts --fix"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.159",
