@@ -60,10 +60,6 @@ const init = () => {
   navigator.mediaDevices.getUserMedia = async function (
     constraints?: MediaStreamConstraints
   ) {
-    console.log("========================");
-    console.log("constraints", { constraints });
-    console.log("========================");
-
     if (!constraints || !isVirtualDevice(constraints.video)) {
       return _getUserMedia.call(navigator.mediaDevices, constraints);
     }
