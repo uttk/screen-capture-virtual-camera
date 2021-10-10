@@ -1,5 +1,12 @@
-const isVirtualDevice = (video?: MediaTrackConstraints): boolean => {
-  if (!video || !video.deviceId) return false;
+import { EmojiLive } from "./utils/EmojiLive";
+
+/**
+ * @description 仮想カメラか判定する
+ */
+const isVirtualDevice = (video?: MediaTrackConstraints | boolean): boolean => {
+  if (!video) return false;
+  if (video === true) return false;
+  if (!video.deviceId) return false;
 
   const deviceId = video.deviceId;
 
@@ -9,64 +16,61 @@ const isVirtualDevice = (video?: MediaTrackConstraints): boolean => {
   return deviceId === "virtual";
 };
 
-const _getUserMedia = navigator.mediaDevices.getUserMedia;
-const _enumerateDevices = navigator.mediaDevices.enumerateDevices;
+/**
+ * @description 画面共有を開始するためのボタンを表示する
+ */
+const displayStartButton = (callback: () => unknown) => {
+  const startButton = document.createElement("button");
 
-navigator.mediaDevices.enumerateDevices = async function () {
-  const res = await _enumerateDevices
-    .call(navigator.mediaDevices)
-    .catch((e) => {
-      console.error(e);
-      return Promise.reject(e);
-    });
+  startButton.innerText = "配信開始🎥";
+  startButton.style.color = "black";
+  startButton.style.right = "32px";
+  startButton.style.bottom = "64px";
+  startButton.style.position = "fixed";
+  startButton.style.background = "white";
+  startButton.style.zIndex = "99999999";
+  startButton.style.padding = "8px 16px";
+  startButton.addEventListener("click", callback);
 
-  const virtualCam = {
-    groupId: "uh",
-    deviceId: "virtual",
-    kind: "videoinput",
-    label: "Emoji Live Virtual Camera 🎥",
-  } as const;
-
-  res.push({ ...virtualCam, toJSON: () => ({ ...virtualCam }) });
-
-  return res;
+  document.body.appendChild(startButton);
 };
 
-const canvas = document.createElement("canvas") as HTMLCanvasElement;
-const video = document.createElement("video") as HTMLVideoElement;
-const ctx = canvas.getContext("2d");
+const init = () => {
+  const _getUserMedia = navigator.mediaDevices.getUserMedia;
+  const _enumerateDevices = navigator.mediaDevices.enumerateDevices;
 
-const renderCanvas = () => {
-  if (!ctx) return;
+  navigator.mediaDevices.enumerateDevices = async function () {
+    const res = await _enumerateDevices.call(navigator.mediaDevices);
 
-  canvas.width = 600;
-  canvas.height = 400;
-  ctx.fillStyle = "rgb(136, 145, 227)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const virtualCam = {
+      groupId: "uh",
+      deviceId: "virtual",
+      kind: "videoinput",
+      label: "Emoji Live Virtual Camera 🎥",
+    } as const;
+
+    res.push({ ...virtualCam, toJSON: () => ({ ...virtualCam }) });
+
+    return res;
+  };
+
+  navigator.mediaDevices.getUserMedia = async function (
+    constraints?: MediaStreamConstraints
+  ) {
+    console.log("========================");
+    console.log("constraints", { constraints });
+    console.log("========================");
+
+    if (!constraints || !isVirtualDevice(constraints.video)) {
+      return _getUserMedia.call(navigator.mediaDevices, constraints);
+    }
+
+    displayStartButton(() => EmojiLive.startScreenCapture());
+
+    return EmojiLive.mediaStream;
+  };
+
+  console.log("EMOJI LIVE VIRTUAL CAMERA INSTALLED 🎥");
 };
 
-video.muted = true;
-video.autoplay = true;
-
-navigator.mediaDevices.getUserMedia = async function (
-  constraints?: MediaStreamConstraints
-) {
-  if (!constraints || typeof constraints.video !== "object")
-    return _getUserMedia.call(navigator.mediaDevices, constraints);
-
-  const video = constraints.video;
-
-  requestAnimationFrame(() => {
-    renderCanvas();
-    requestAnimationFrame(renderCanvas);
-  });
-
-  if (isVirtualDevice(video)) {
-    const newStream = canvas.captureStream(10);
-    return newStream;
-  }
-
-  return _getUserMedia.call(navigator.mediaDevices, constraints);
-};
-
-console.log("EMOJI LIVE VIRTUAL CAMERA INSTALLED 🎥");
+init();
