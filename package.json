@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "http-server ./public -p 3000",
     "dev": "cross-env NODE_ENV=development webpack",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "run-p lint:*",
@@ -22,6 +23,7 @@
     "esbuild-loader": "^2.16.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "http-server": "^13.0.2",
     "husky": "^7.0.2",
     "lint-staged": "^11.2.0",
     "npm-run-all": "^4.1.5",

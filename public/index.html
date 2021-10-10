@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emoji Live Virtual Camera 🎥</title>
+  </head>
+
+  <body>
+    <h2>プレビュー画面</h2>
+    <video id="preview" style="background: gray"></video>
+  </body>
+
+  <script>
+    window.addEventListener("load", async () => {
+      const stream = await navigator.mediaDevices
+        .getUserMedia({ audio: false, video: { deviceId: "virtual" } })
+        .catch(console.error);
+
+      if (!stream) return;
+
+      /** @type {HTMLVideoElement} */
+      const video = document.getElementById("preview");
+
+      video.onloadedmetadata = () => video.play();
+      video.srcObject = stream;
+    });
+  </script>
+</html>
