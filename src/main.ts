@@ -1,5 +1,3 @@
-import { EmojiLive } from "./utils/EmojiLive";
-
 /**
  * @description 仮想カメラか判定する
  */
@@ -19,7 +17,7 @@ const isVirtualDevice = (video?: MediaTrackConstraints | boolean): boolean => {
 /**
  * @description 画面共有を開始するためのボタンを表示する
  */
-const displayStartButton = (callback: () => unknown) => {
+const displayStartButton = <T>(callback: () => Promise<T>): Promise<T> => {
   const startButton = document.createElement("button");
 
   startButton.innerText = "配信開始🎥";
@@ -30,9 +28,14 @@ const displayStartButton = (callback: () => unknown) => {
   startButton.style.background = "white";
   startButton.style.zIndex = "99999999";
   startButton.style.padding = "8px 16px";
-  startButton.addEventListener("click", callback);
 
   document.body.appendChild(startButton);
+
+  return new Promise<T>((resolve) => {
+    startButton.addEventListener("click", () => {
+      callback().then(resolve);
+    });
+  });
 };
 
 const init = () => {
@@ -65,9 +68,29 @@ const init = () => {
       return _getUserMedia.call(navigator.mediaDevices, constraints);
     }
 
-    displayStartButton(() => EmojiLive.startScreenCapture());
+    const stream = await displayStartButton(async () => {
+      const captureStream = await navigator.mediaDevices
+        .getDisplayMedia({ audio: false, video: true })
+        .catch((error) => {
+          console.error(error);
+          console.log("再生に失敗しました");
+          return null;
+        });
 
-    return EmojiLive.mediaStream;
+      const tracks = captureStream?.getTracks();
+
+      if (!captureStream || !tracks) throw new Error("配信に失敗しました😥");
+
+      tracks.forEach((track) => {
+        track.onended = () => console.log("STOP: Emoji Live 🎥");
+      });
+
+      console.log("配信スタート🎥 from playEmojiLive()");
+
+      return captureStream;
+    });
+
+    return stream;
   };
 
   console.log("EMOJI LIVE VIRTUAL CAMERA INSTALLED 🎥");
