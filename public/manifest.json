@@ -6,7 +6,7 @@
   "description": "Emoji Liveを描画するための仮想カメラを提供します",
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["http://localhost:*/*", "https://meet.google.com/*"],
       "js": ["index.js"],
       "run_at": "document_start",
       "all_frames": true
