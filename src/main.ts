@@ -12,7 +12,7 @@ const getCaptureStream = async () => {
 
   // キャプチャが終了した時のコールバックを設定する
   captureStream.getTracks().forEach((track) => {
-    track.onended = () => console.log("STOP: Emoji Live 🎥");
+    track.onended = () => console.log("STOP: Screen Capture Virtual Camera 🎥");
   });
 
   return captureStream;
@@ -68,7 +68,7 @@ navigator.mediaDevices.enumerateDevices = async function () {
     groupId: "default",
     deviceId: "virtual",
     kind: "videoinput",
-    label: "Emoji Live Virtual Camera 🎥",
+    label: "Screen Capture Virtual Camera 🎥",
   } as const;
 
   // 仮想デバイスを追加する
@@ -77,4 +77,4 @@ navigator.mediaDevices.enumerateDevices = async function () {
   return devices;
 };
 
-console.log("EMOJI LIVE VIRTUAL CAMERA がインストールされました 🎥");
+console.log("Screen Capture Virtual Camera がインストールされました 🎥");

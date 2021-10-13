@@ -1,9 +1,9 @@
 {
-  "name": "Emoji Live Virtual Webcam",
+  "name": "Screen Capture Virtual Camera 🎥",
   "version": "0.0.1",
   "minimum_chrome_version": "10.0",
   "icons": {},
-  "description": "Emoji Liveを描画するための仮想カメラを提供します",
+  "description": "画面キャプチャを描画するための仮想カメラを提供します 🎥",
   "content_scripts": [
     {
       "matches": ["http://localhost:*/*", "https://meet.google.com/*"],
