@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "http-server ./public -p 4000",
+    "start": "http-server ./public -p 3000",
     "dev": "cross-env NODE_ENV=development webpack",
     "build": "cross-env NODE_ENV=production webpack",
     "lint": "run-p lint:*",

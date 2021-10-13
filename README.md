@@ -41,9 +41,22 @@ $> yarn dev --watch
 
 ## 使用方法
 
+### サンプルアプリ
+
+以下のコマンドを実行して、サンプルアプリを実行することができます。
+
+```shell
+$> yarn start
+```
+
+### Google Meet
+
+**※ Google Meet の挙動がおかしくなる可能性がありますので、実行する際は自己責任でお願いします。**
+
 [Google Meet](https://apps.google.com/intl/ja/meet/) にアクセスして会議を開き、表示したい画面をポップアップから選択すると、選択した画面をカメラとして使用できます。
 
 
 ![Google Meetで作った拡張を使用しているGif画像](/images/chrome-extension-example.gif)
 
 ※ 遷移するたびにポップアップが表示されますので、使用する際はそれぞれ別ウィンドウで開く必要があります。
+
